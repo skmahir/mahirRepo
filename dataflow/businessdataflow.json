@@ -23,7 +23,7 @@
 			],
 			"transformations": [
 				{
-					"name": "filter1"
+					"name": "filterstream"
 				},
 				{
 					"name": "sort1"
@@ -52,8 +52,8 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> businessource",
-				"businessource filter(Gender==\"Male\" && WkDay==\"Mon\") ~> filter1",
-				"filter1 sort(asc(Month, true)) ~> sort1",
+				"businessource filter(Gender==\"Male\" && WkDay==\"Mon\") ~> filterstream",
+				"filterstream sort(asc(Month, true)) ~> sort1",
 				"sort1 derive(totalloss = {Days Lost}*{Incident Cost}) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
