@@ -1,0 +1,68 @@
+{
+	"name": "businessdataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Excel1",
+						"type": "DatasetReference"
+					},
+					"name": "businessource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "sort1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Date as date,",
+				"          {Injury Location} as string,",
+				"          Gender as string,",
+				"          {Age Group} as string,",
+				"          {Incident Type} as string,",
+				"          {Days Lost} as double,",
+				"          Plant as string,",
+				"          {Report Type} as string,",
+				"          Shift as string,",
+				"          Department as string,",
+				"          {Incident Cost} as short,",
+				"          WkDay as string,",
+				"          Month as short,",
+				"          Year as short",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> businessource",
+				"businessource filter(Gender==\"Male\" && WkDay==\"Mon\") ~> filter1",
+				"filter1 sort(asc(Month, true)) ~> sort1",
+				"sort1 derive(totalloss = {Days Lost}*{Incident Cost}) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}

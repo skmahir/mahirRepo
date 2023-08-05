@@ -1,0 +1,9 @@
+{
+	"name": "AzureDEDF",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "4a7967fa-d45f-4a25-94ad-05bc3c9c27ab",
+		"tenantId": "ae78eac8-ed9d-4d92-8c78-5c3a8762aebe"
+	}
+}

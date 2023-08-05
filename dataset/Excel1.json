@@ -1,0 +1,79 @@
+{
+	"name": "Excel1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorageDE",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "SafetyData",
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "sampledatasafety.xlsx",
+				"fileSystem": "rawdata"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "Date",
+				"type": "String"
+			},
+			{
+				"name": "Injury Location",
+				"type": "String"
+			},
+			{
+				"name": "Gender",
+				"type": "String"
+			},
+			{
+				"name": "Age Group",
+				"type": "String"
+			},
+			{
+				"name": "Incident Type",
+				"type": "String"
+			},
+			{
+				"name": "Days Lost",
+				"type": "String"
+			},
+			{
+				"name": "Plant",
+				"type": "String"
+			},
+			{
+				"name": "Report Type",
+				"type": "String"
+			},
+			{
+				"name": "Shift",
+				"type": "String"
+			},
+			{
+				"name": "Department",
+				"type": "String"
+			},
+			{
+				"name": "Incident Cost",
+				"type": "String"
+			},
+			{
+				"name": "WkDay",
+				"type": "String"
+			},
+			{
+				"name": "Month",
+				"type": "String"
+			},
+			{
+				"name": "Year",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
