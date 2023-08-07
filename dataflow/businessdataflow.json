@@ -19,6 +19,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText2",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
 				}
 			],
 			"transformations": [
@@ -30,6 +37,12 @@
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "join1"
 				}
 			],
 			"scriptLines": [
@@ -55,13 +68,31 @@
 				"businessource filter(Gender==\"Male\" && WkDay==\"Mon\") ~> filterstream",
 				"filterstream sort(asc(Month, true)) ~> sort1",
 				"sort1 derive(totalloss = {Days Lost}*{Incident Cost}) ~> derivedColumn1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"businessource split(Gender==\"Female\",",
+				"     Gender==\"Male\",",
+				"     disjoint: false) ~> split1@(FemaleStream, MaleStream)",
+				"filterstream, split1@FemaleStream join(businessource@Date == split1@FemaleStream@Date",
+				"     && businessource@{Injury Location} == split1@FemaleStream@{Injury Location}",
+				"     && businessource@Gender == split1@FemaleStream@Gender",
+				"     && businessource@{Age Group} == split1@FemaleStream@{Age Group}",
+				"     && businessource@{Incident Type} == split1@FemaleStream@{Incident Type}",
+				"     && businessource@{Days Lost} == split1@FemaleStream@{Days Lost}",
+				"     && businessource@Plant == split1@FemaleStream@Plant,",
+				"     joinType:'outer',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'both')~> join1",
+				"join1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> sink1",
+				"split1@MaleStream sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink2"
 			]
 		}
 	}
