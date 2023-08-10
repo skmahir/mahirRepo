@@ -1,0 +1,34 @@
+{
+	"name": "LookupTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "LookupTable",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "LookupTable.xlsx",
+				"container": "source"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "ID",
+				"type": "String"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "Contact",
+				"type": "String"
+			}
+		]
+	}
+}
