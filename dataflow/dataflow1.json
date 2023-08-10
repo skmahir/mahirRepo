@@ -1,0 +1,55 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Source",
+						"type": "DatasetReference"
+					},
+					"name": "originalsource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Nametarget",
+						"type": "DatasetReference"
+					},
+					"name": "nametarget",
+					"description": "adding ID and creating Target with ID and name"
+				}
+			],
+			"transformations": [
+				{
+					"name": "selectonlyidandname"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ID as string,",
+				"          Name as string,",
+				"          Address as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> originalsource",
+				"originalsource select(mapColumn(",
+				"          ID,",
+				"          Name",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectonlyidandname",
+				"selectonlyidandname sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> nametarget"
+			]
+		}
+	}
+}
